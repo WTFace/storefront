@@ -41,7 +41,7 @@ export class UserStore {
     async create(u: User): Promise<User> {
         try {
             const sql =
-                'INSERT INTO users (firstName, lastName, password) VALUES($1, $2, $3) RETURNING *';
+                'INSERT INTO users (firstname, lastname, password) VALUES($1, $2, $3) RETURNING *';
             const conn = await Client.connect();
 
             const result = await conn.query(sql, [

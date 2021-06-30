@@ -15,8 +15,23 @@ const user_routes = (app: express.Application) => {
             const user = await store.show(req.params.id);
             res.json(user);
         } catch (err) {
-           res.status(400)
-           res.json(err)
+            res.status(400);
+            res.json(err);
+        }
+    });
+    app.post('/users', async (req: Request, res: Response) => {
+        const user: User = {
+            id: 1,
+            firstName: req.body.first,
+            lastName: req.body.last,
+            password: req.body.password
+        }
+        try {
+            await store.create(user);
+            res.json(user);
+        } catch (err) {
+            res.json(err);
+            res.status(400);
         }
     })
 };
