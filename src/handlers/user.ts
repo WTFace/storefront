@@ -8,9 +8,9 @@ const index = async (_req: Request, res: Response): Promise<void> => {
     res.json(users);
 };
 
-const user_routes = (app: express.Application) => {
+const user_routes = (app: express.Application): void => {
     app.get('/users', index);
-    app.get('/users/:id', async (req: Request, res: Response) => {
+    app.get('/users/:id', async (req, res) => {
         try {
             const user = await store.show(req.params.id);
             res.json(user);
@@ -18,28 +18,40 @@ const user_routes = (app: express.Application) => {
             res.status(400).json(err);
         }
     });
-    app.post('/users', async (req: Request, res: Response) => {
+    app.post('/users', async (req, res) => {
         const user: User = {
             id: 1,
             firstName: req.body.first,
             lastName: req.body.last,
-            password: req.body.password
-        }
+            password: req.body.password,
+        };
         try {
             const created = await store.create(user);
             res.json(created);
         } catch (err) {
             res.json(err);
         }
-    })
-    app.delete('/users', async (req:Request, res:Response) => {
+    });
+    app.put('/users', async (req, res) => {
+        const columns = JSON.parse(req.body.columns);
+        const values = JSON.parse(req.body.values);
+        // const columns = req.body.columns;
+        // const values = req.body.values;
+        try {
+            const updated = await store.update(req.body.id, columns, values);
+            res.json(updated);
+        } catch (err) {
+            res.json(err);
+        }
+    });
+    app.delete('/users', async (req, res) => {
         try {
             const user = await store.destroy(req.body.id);
             res.json(user);
         } catch (err) {
-            res.json(err)
+            res.json(err);
         }
-    })
+    });
 };
 
 export default user_routes;
