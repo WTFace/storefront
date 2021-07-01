@@ -1,4 +1,5 @@
 import Client from '../database';
+import crud from '../crud/common';
 
 export type User = {
     id: number;
@@ -8,40 +9,19 @@ export type User = {
 };
 
 export class UserStore {
-    async index(): Promise<User[]> {
-        try {
-            const conn = await Client.connect();
-            const sql = 'SELECT * FROM users';
+    public index;
+    public show;
+    public destroy;
 
-            const result = await conn.query(sql);
-
-            conn.release();
-
-            return result.rows;
-        } catch (err) {
-            throw new Error(`Could not get users. Error: ${err}`);
-        }
-    }
-
-    async show(id: string): Promise<User> {
-        try {
-            const sql = 'SELECT * FROM users WHERE id=($1)';
-            const conn = await Client.connect();
-
-            const result = await conn.query(sql, [id]);
-
-            conn.release();
-
-            return result.rows[0];
-        } catch (err) {
-            throw new Error(`Could not find user ${id}. Error: ${err}`);
-        }
+    constructor(){
+        this.index = crud.index<User>('user');
+        this.show = crud.show<User>('user');
+        this.destroy = crud.destroy<User>('user');
     }
 
     async create(u: User): Promise<User> {
         try {
-            const sql =
-                'INSERT INTO users (firstname, lastname, password) VALUES($1, $2, $3) RETURNING *';
+            const sql = 'INSERT INTO users (firstname, lastname, password) VALUES($1, $2, $3) RETURNING *';
             const conn = await Client.connect();
 
             const result = await conn.query(sql, [
@@ -51,9 +31,7 @@ export class UserStore {
             ]);
 
             const user = result.rows[0];
-
             conn.release();
-
             return user;
         } catch (err) {
             throw new Error(`Could not add new user. Error: ${err}`);

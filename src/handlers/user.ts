@@ -15,8 +15,7 @@ const user_routes = (app: express.Application) => {
             const user = await store.show(req.params.id);
             res.json(user);
         } catch (err) {
-            res.status(400);
-            res.json(err);
+            res.status(400).json(err);
         }
     });
     app.post('/users', async (req: Request, res: Response) => {
@@ -27,11 +26,18 @@ const user_routes = (app: express.Application) => {
             password: req.body.password
         }
         try {
-            await store.create(user);
-            res.json(user);
+            const created = await store.create(user);
+            res.json(created);
         } catch (err) {
             res.json(err);
-            res.status(400);
+        }
+    })
+    app.delete('/users', async (req:Request, res:Response) => {
+        try {
+            const user = await store.destroy(req.body.id);
+            res.json(user);
+        } catch (err) {
+            res.json(err)
         }
     })
 };
