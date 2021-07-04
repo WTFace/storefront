@@ -1,7 +1,11 @@
 /* Replace with your SQL commands */
+-- CREATE USER full_stack_js WITH PASSWORD 'postgres';
+GRANT ALL PRIVILEGES ON DATABASE full_stack_js TO postgres;
+GRANT ALL PRIVILEGES ON DATABASE test TO postgres;
+
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    firstName VARCHAR(30) NOT NULL,
-    lastName VARCHAR(30) NOT NULL,
+    firstname VARCHAR(30) NOT NULL,
+    lastame VARCHAR(30) NOT NULL,
     password VARCHAR NOT NULL
 );
