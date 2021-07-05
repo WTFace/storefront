@@ -34,11 +34,11 @@ export class UserStore {
                 u.password,
             ]);
 
-            const user = result.rows[0];
+            const row = result.rows[0];
             conn.release();
-            return user;
+            return row;
         } catch (err) {
-            throw new Error(`Could not add new user. Error: ${err}`);
+            throw new Error(`Could not add a new row. Error: ${err}`);
         }
     }
 }
