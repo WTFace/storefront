@@ -5,7 +5,7 @@ export type Product = {
     id: number;
     name: string;
     price: number;
-}
+};
 
 export class ProductStore {
     public index;
@@ -20,13 +20,10 @@ export class ProductStore {
     async create(m: Product): Promise<Product> {
         try {
             const sql =
-                'INSERT INTO products ( lastname, price) VALUES($1, $2) RETURNING *';
+                'INSERT INTO products ( name, price) VALUES($1, $2) RETURNING *';
             const conn = await Client.connect();
 
-            const result = await conn.query(sql, [
-                m.name,
-                m.price,
-            ]);
+            const result = await conn.query(sql, [m.name, m.price]);
 
             const row = result.rows[0];
             conn.release();

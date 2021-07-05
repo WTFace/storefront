@@ -1,20 +1,18 @@
-import { UserStore } from '../user';
+import { ProductStore } from '../product';
 
-const store = new UserStore();
+const store = new ProductStore();
 
-describe('User Model', () => {
+describe('Product Model', () => {
     it('create method should add a record', async () => {
         const result = await store.create({
             id: 1,
-            firstname: 'first',
-            lastname: 'last',
-            password: 'password',
+            name: 'item1',
+            price: 1000,
         });
         expect(result).toEqual({
             id: 1,
-            firstname: 'first',
-            lastname: 'last',
-            password: 'password',
+            name: 'item1',
+            price: 1000,
         });
     });
 
@@ -23,9 +21,8 @@ describe('User Model', () => {
         expect(result).toEqual([
             {
                 id: 1,
-                firstname: 'first',
-                lastname: 'last',
-                password: 'password',
+                name: 'item1',
+                price: 1000,
             },
         ]);
     });
@@ -34,9 +31,8 @@ describe('User Model', () => {
         const result = await store.show('1');
         expect(result).toEqual({
             id: 1,
-            firstname: 'first',
-            lastname: 'last',
-            password: 'password',
+            name: 'item1',
+            price: 1000,
         });
     });
 });
