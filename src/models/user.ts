@@ -3,8 +3,8 @@ import crud from '../crud/common';
 
 export type User = {
     id: number;
-    firstName: string;
-    lastName: string;
+    firstname: string;
+    lastname: string;
     password: string;
 };
 
@@ -29,8 +29,8 @@ export class UserStore {
             const conn = await Client.connect();
 
             const result = await conn.query(sql, [
-                u.firstName,
-                u.lastName,
+                u.firstname,
+                u.lastname,
                 u.password,
             ]);
 
