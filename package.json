@@ -7,9 +7,11 @@
     "prettify": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "lint": "npm run prettify && npx eslint . --ext .ts",
     "start": "nodemon src/server.ts",
+    "jasmine": "jasmine",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
     "test": "ENV=test db-migrate db:create test && db-migrate --env test up && jasmine-ts && db-migrate db:drop test",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "drop": "db-migrate db:drop test"
   },
   "author": "Udacity",
   "license": "ISC",
