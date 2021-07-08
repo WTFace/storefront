@@ -10,33 +10,16 @@ describe('User Model', () => {
             lastname: 'last',
             password: 'password',
         });
-        expect(result).toEqual({
-            id: 1,
-            firstname: 'first',
-            lastname: 'last',
-            password: 'password',
-        });
+        expect(result.password).not.toEqual('password');
     });
 
     it('index method should return a list', async () => {
         const result = await store.index();
-        expect(result).toEqual([
-            {
-                id: 1,
-                firstname: 'first',
-                lastname: 'last',
-                password: 'password',
-            },
-        ]);
+        expect(result.length).toEqual(1);
     });
 
     it('show method should return the correct model', async () => {
         const result = await store.show('1');
-        expect(result).toEqual({
-            id: 1,
-            firstname: 'first',
-            lastname: 'last',
-            password: 'password',
-        });
+        expect(result.id).toEqual(1);
     });
 });

@@ -6,6 +6,6 @@
   "helpers": [
     "../src/models/tests/helpers/**/*.ts"
   ],
-  "stopSpecOnExpectationFailure": false,
+  "stopSpecOnExpectationFailure": true,
   "random": false
 }

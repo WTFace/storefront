@@ -1,5 +1,6 @@
 import Client from '../database';
 import crud from '../crud/common';
+import bcrypt from 'bcrypt';
 
 export type User = {
     id: number;
@@ -23,15 +24,15 @@ export class UserStore {
     }
 
     async create(u: User): Promise<User> {
+        const hash = await bcrypt.hash(u.password, Number(process.env.SALT_ROUND));
         try {
             const sql =
                 'INSERT INTO users (firstname, lastname, password) VALUES($1, $2, $3) RETURNING *';
             const conn = await Client.connect();
-
             const result = await conn.query(sql, [
                 u.firstname,
                 u.lastname,
-                u.password,
+                hash,
             ]);
 
             const row = result.rows[0];
