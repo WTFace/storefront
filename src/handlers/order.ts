@@ -28,12 +28,16 @@ const order_routes = (app: express.Application): void => {
     });
     app.post('/orders/:id/add', async (req, res) => {
         try {
-            const order = await store.addProduct(req.body.number, req.params.id, req.body.product_id);
+            const order = await store.addProduct(
+                req.body.number,
+                req.params.id,
+                req.body.product_id
+            );
             res.json(order);
         } catch (err) {
             res.status(400).json(err);
         }
-    })
+    });
 };
 
 export default order_routes;
