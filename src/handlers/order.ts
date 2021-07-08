@@ -30,7 +30,7 @@ const order_routes = (app: express.Application): void => {
         try {
             const order = await store.addProduct(
                 req.body.number,
-                req.params.id,
+                Number(req.params.id),
                 req.body.product_id
             );
             res.json(order);

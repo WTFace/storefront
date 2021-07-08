@@ -7,6 +7,13 @@ export type Order = {
     user_id: number;
 };
 
+export type OrderProduct = {
+    id: number;
+    quantity: number;
+    order_id: number;
+    product_id: number;
+};
+
 export class OrderStore {
     public index;
     public show;
@@ -32,9 +39,9 @@ export class OrderStore {
 
     async addProduct(
         quantity: number,
-        orderId: string,
-        product_id: string
-    ): Promise<Order> {
+        order_id: number,
+        product_id: number
+    ): Promise<OrderProduct> {
         try {
             const sql =
                 'INSERT INTO order_products (quantity, order_id, product_id) VALUES($1, $2, $3) RETURNING *';
@@ -42,7 +49,7 @@ export class OrderStore {
 
             const result = await conn.query(sql, [
                 quantity,
-                orderId,
+                order_id,
                 product_id,
             ]);
 
@@ -51,18 +58,18 @@ export class OrderStore {
             return row;
         } catch (err) {
             throw new Error(
-                `Could not add product ${product_id} to order ${orderId}: ${err}`
+                `Could not add product ${product_id} to order ${order_id}: ${err}`
             );
         }
     }
 
-    async ordersByUser(): Promise<{ firstName: string; lastName: string }[]> {
+    async ordersByUser(user_id: number): Promise<{ id: number }[]> {
         try {
             const conn = await Client.connect();
             const sql =
-                'SELECT orders.id FROM users INNER JOIN orders ON users.id = orders.user_id';
+                'SELECT orders.id FROM users JOIN orders ON users.id = orders.user_id WHERE users.id = ($1)';
 
-            const result = await conn.query(sql);
+            const result = await conn.query(sql, [user_id]);
             conn.release();
             return result.rows;
         } catch (err) {

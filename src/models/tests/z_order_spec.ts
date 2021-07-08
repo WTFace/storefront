@@ -22,4 +22,20 @@ describe('Product and Order', () => {
             user_id: 1,
         });
     });
+
+    it('addProduct', async () => {
+        const result = await o_store.addProduct(10, 1, 1);
+        expect(result).toEqual({
+            id: 1,
+            quantity: 10,
+            order_id: 1,
+            product_id: 1,
+        });
+    });
+
+    it('ordersByUser', async () => {
+        await o_store.create(1);
+        const result = await o_store.ordersByUser(1);
+        expect(result).toEqual([{ id: 1 }, { id: 2 }]);
+    });
 });
