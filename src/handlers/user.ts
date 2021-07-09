@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express';
 import { User, UserStore } from '../models/user';
+import verifyAuthToken from '../middleware/auth';
+import jwt from 'jsonwebtoken';
 
 const store = new UserStore();
 
@@ -9,8 +11,8 @@ const index = async (_req: Request, res: Response): Promise<void> => {
 };
 
 const user_routes = (app: express.Application): void => {
-    app.get('/users', index);
-    app.get('/users/:id', async (req, res) => {
+    app.get('/users', verifyAuthToken, index);
+    app.get('/users/:id', verifyAuthToken, async (req, res) => {
         try {
             const user = await store.show(req.params.id);
             res.json(user);
@@ -21,22 +23,26 @@ const user_routes = (app: express.Application): void => {
     app.post('/users', async (req, res) => {
         const user: User = {
             id: 1,
-            firstName: req.body.first,
-            lastName: req.body.last,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
             password: req.body.password,
         };
+        
         try {
             const created = await store.create(user);
-            res.json(created);
+            const token = jwt.sign(
+                { user: created },
+                process.env.TOKEN_SECRET!
+            );
+            res.json(token);
+            // res.json(created);
         } catch (err) {
             res.json(err);
         }
     });
-    app.put('/users', async (req, res) => {
+    app.put('/users', verifyAuthToken, async (req, res) => {
         const columns = JSON.parse(req.body.columns);
         const values = JSON.parse(req.body.values);
-        // const columns = req.body.columns;
-        // const values = req.body.values;
         try {
             const updated = await store.update(req.body.id, columns, values);
             res.json(updated);
