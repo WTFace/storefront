@@ -1,7 +1,5 @@
-import { ProductStore } from '../product';
 import { OrderStore } from '../order';
 
-const p_store = new ProductStore();
 const o_store = new OrderStore();
 
 describe('Product and Order', () => {
