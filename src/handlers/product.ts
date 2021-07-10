@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { Product, ProductStore } from '../models/product';
+import verifyAuthToken from '../middleware/auth';
 
 const store = new ProductStore();
 
@@ -18,7 +19,7 @@ const product_routes = (app: express.Application): void => {
             res.status(400).json(err);
         }
     });
-    app.post('/products', async (req, res) => {
+    app.post('/products', verifyAuthToken, async (req, res) => {
         const product: Product = {
             id: 1,
             name: req.body.name,

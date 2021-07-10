@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { OrderStore } from '../models/order';
+import verifyAuthToken from '../middleware/auth';
 
 const store = new OrderStore();
 
@@ -36,6 +37,14 @@ const order_routes = (app: express.Application): void => {
             res.json(order);
         } catch (err) {
             res.status(400).json(err);
+        }
+    });
+    app.get('/orders/:user_id', verifyAuthToken, async (req, res) => {
+        try {
+            const orders = await store.ordersByUser(Number(req.params.user_id));
+            res.json(orders);
+        } catch (err) {
+            res.json(err);
         }
     });
 };
