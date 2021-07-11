@@ -34,6 +34,7 @@ const user_routes = (app: express.Application): void => {
                 { user: created },
                 process.env.TOKEN_SECRET!
             );
+            console.log(token);
             res.json(token);
             // res.json(created);
         } catch (err) {
