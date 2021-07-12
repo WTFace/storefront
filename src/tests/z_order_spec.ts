@@ -1,4 +1,4 @@
-import { OrderStore } from '../order';
+import { OrderStore } from '../models/order';
 
 const o_store = new OrderStore();
 
