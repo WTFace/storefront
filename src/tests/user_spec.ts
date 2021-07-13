@@ -15,7 +15,8 @@ describe('User Model', () => {
 
     it('index method should return a list', async () => {
         const result = await store.index();
-        expect(result.length).toEqual(1);
+        // one from endpoint test
+        expect(result.length).toEqual(2);
     });
 
     it('show method should return the correct model', async () => {
